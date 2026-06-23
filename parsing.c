@@ -58,10 +58,8 @@ int	parse_args(sim_t *sim, char **argv)
 			return (-1);
 		i++;
 	}
-	if (!ft_is_valid_scheduler(argv[8]))
+	if (!ft_is_valid_scheduler(argv[8]) || values[0] == 0)
 		return (-1);
-	/* TODO: decide si number_of_coders == 0 (values[0]) es valido o no,
-	 * el enunciado no lo dice explicitamente. */
 	sim->number_of_coders = (int)values[0];
 	sim->time_to_burnout = values[1];
 	sim->time_to_compile = values[2];

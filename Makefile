@@ -3,7 +3,7 @@ NAME = codexion
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -pthread
 
-SRCS = main.c parsing.c
+SRCS = main.c parsing.c heap_init.c heap_utils.c heap_push.c heap_remove.c dongle.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
@@ -11,7 +11,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.c codexion.h
+%.o: %.c codexion.h heap.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
