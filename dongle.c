@@ -1,18 +1,22 @@
 #include "codexion.h"
 
-/* TODO: implement the real priority criterion.
- *
- * If sim->scheduler is "fifo": the smaller value = whoever has been waiting
- *   LONGER for this specific dongle. Hint: coder_t doesn't have a field yet
- *   for "since when am I waiting" - decide where to add it, and at what
- *   exact moment it gets filled in (review block 3: it must happen BEFORE
- *   the first cond_wait, exactly once).
- * If it's "edf": the smaller value = the closest deadline =
- *   compile_timer + time_to_burnout. Both fields already exist,
- *   in coder_t and sim_t.
- *
- * "ctx" will be your sim_t* (you decide that when calling heap_init). */
-long	get_priority(void *ctx, int coder_id)
+/* TODO: priority for fifo mode only - assumes no branching, ever.
+ * Smaller value = whoever has been waiting LONGER for this dongle.
+ * Hint: coder_t doesn't have a field yet for "since when am I waiting" -
+ * decide where to add it, and at what exact moment it gets filled in
+ * (review block 3: it must happen BEFORE the first cond_wait, exactly once). */
+long	fifo_priority(void *ctx, int coder_id)
+{
+	/* TODO */
+	(void)ctx;
+	(void)coder_id;
+	return (0);
+}
+
+/* TODO: priority for edf mode only - assumes no branching, ever.
+ * Smaller value = the closest deadline = compile_timer + time_to_burnout.
+ * Both fields already exist, in coder_t and sim_t. */
+long	edf_priority(void *ctx, int coder_id)
 {
 	/* TODO */
 	(void)ctx;

@@ -61,7 +61,8 @@ struct s_sim
 
 int		parse_args(sim_t *sim, char **argv);
 
-long	get_priority(void *ctx, int coder_id);
+long	fifo_priority(void *ctx, int coder_id);
+long	edf_priority(void *ctx, int coder_id);
 void	acquire_dongles(coder_t *coder, sim_t *sim);
 void	release_dongles(coder_t *coder, sim_t *sim);
 
