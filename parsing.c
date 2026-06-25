@@ -28,22 +28,22 @@ static int	ft_is_valid_scheduler(const char *s)
 	return (strcmp(s, "fifo") == 0 || strcmp(s, "edf") == 0);
 }
 
-static char *ft_strncpy(char *dest, const char *src, size_t n)
+static char	*ft_strncpy(char *dest, const char *src, size_t n)
 {
-    size_t i;
-    
-    i = 0;
-    while (i < n && src[i] != '\0')
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    while (i < n)
-    {
-        dest[i] = '\0';
-        i++;
-    }
-    return dest;
+	size_t	i;
+
+	i = 0;
+	while (i < n && src[i] != '\0')
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
 }
 
 int	parse_args(sim_t *sim, char **argv)

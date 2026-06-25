@@ -20,7 +20,7 @@ typedef struct s_sim	sim_t;
 
 typedef struct s_dongle
 {
-	t_dongle_state		estado;
+	t_dongle_state		state;
 	long				state_timer;
 	pthread_mutex_t		mutex;
 	pthread_cond_t		wait_room;
@@ -32,6 +32,7 @@ typedef struct s_coder
 	int					id;
 	int					compile_amount;
 	long				compile_timer;
+	long				wait_since;
 	pthread_t			thread;
 	sim_t				*general_ref;
 }	coder_t;
@@ -60,6 +61,9 @@ struct s_sim
 };
 
 int		parse_args(sim_t *sim, char **argv);
+
+long	now_ms(void);
+void	ms_to_timespec(long ms, struct timespec *ts);
 
 long	fifo_priority(void *ctx, int coder_id);
 long	edf_priority(void *ctx, int coder_id);
