@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_priority.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*   By: guantino <guantino@student.42malaga.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
-/*   Updated: 2026/07/09 14:56:08 by guantino         ###   ########.fr       */
+/*   Created: 2026/07/09 15:57:31 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 15:57:34 by guantino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,5 @@ long	edf_priority(void *ctx, int coder_id)
 	t_sim	*sim;
 
 	sim = (t_sim *)ctx;
-	return (sim->coders[coder_id].compile_timer + sim->time_to_burnout);
+	return (sim->coders[coder_id].compile_timer);
 }

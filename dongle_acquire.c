@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dongle_acquire.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*   By: guantino <guantino@student.42malaga.c      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
-/*   Updated: 2026/07/09 14:55:58 by guantino         ###   ########.fr       */
+/*   Created: 2026/07/09 15:57:22 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 15:57:25 by guantino         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
