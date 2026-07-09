@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dongle_acquire.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 14:55:58 by guantino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 #define DONGLE_RETRY_MS 5
@@ -6,7 +18,7 @@
  * or because its cooldown has actually elapsed - nothing else in the
  * project ever flips COOLDOWN back to FREE explicitly, so "elapsed
  * cooldown" has to be checked here, on demand, by whoever is asking. */
-static int	dongle_available(dongle_t *dongle, sim_t *sim)
+static int	dongle_available(t_dongle *dongle, t_sim *sim)
 {
 	if (dongle->state == DONGLE_FREE)
 		return (1);
@@ -25,7 +37,7 @@ static int	dongle_available(dongle_t *dongle, sim_t *sim)
  *   right now. We fall back to a short fixed poll instead of sleeping
  *   indefinitely, so the moment the other coder actually acts (and
  *   broadcasts), or even if it doesn't, we re-check soon either way. */
-static long	next_deadline(dongle_t *dongle, sim_t *sim)
+static long	next_deadline(t_dongle *dongle, t_sim *sim)
 {
 	if (dongle->state == DONGLE_IN_USE)
 		return (dongle->state_timer + sim->time_to_compile);
@@ -35,29 +47,43 @@ static long	next_deadline(dongle_t *dongle, sim_t *sim)
 	return (now_ms() + DONGLE_RETRY_MS);
 }
 
-static void	acquire_one_dongle(dongle_t *dongle, coder_t *coder, sim_t *sim)
+/* Two conditions to proceed (same skeleton as the wait/bell demo):
+ * it is my turn in the queue AND the dongle is usable. The loop also
+ * exits when the stop switch flips - otherwise a waiting coder would
+ * sleep forever after the simulation ends and join would hang.
+ * Returns 1 if acquired, 0 if the simulation stopped while waiting. */
+static int	acquire_one_dongle(t_dongle *dongle, t_coder *coder, t_sim *sim)
 {
 	struct timespec	deadline;
 
 	pthread_mutex_lock(&dongle->mutex);
 	coder->wait_since = now_ms();
 	heap_push(&dongle->heap, coder->id);
-	while (!(heap_peek_min(&dongle->heap) == coder->id
+	while (!sim_should_stop(sim)
+		&& !(heap_peek_min(&dongle->heap) == coder->id
 			&& dongle_available(dongle, sim)))
 	{
 		ms_to_timespec(next_deadline(dongle, sim), &deadline);
 		pthread_cond_timedwait(&dongle->wait_room, &dongle->mutex, &deadline);
 	}
 	heap_remove_id(&dongle->heap, coder->id);
+	if (sim_should_stop(sim))
+	{
+		pthread_mutex_unlock(&dongle->mutex);
+		return (0);
+	}
 	dongle->state = DONGLE_IN_USE;
 	dongle->state_timer = now_ms();
 	pthread_cond_broadcast(&dongle->wait_room);
 	pthread_mutex_unlock(&dongle->mutex);
+	log_state(sim, coder->id, "has taken a dongle");
+	return (1);
 }
 
 /* Already solved - this is the total-order rule you derived:
- * always request the LOWER-index dongle first, of your two possible ones. */
-void	acquire_dongles(coder_t *coder, sim_t *sim)
+ * always request the LOWER-index dongle first, of your two possible ones.
+ * Returns 0 (abort) if the simulation stopped mid-acquisition. */
+int	acquire_dongles(t_coder *coder, t_sim *sim)
 {
 	int	left;
 	int	right;
@@ -76,6 +102,7 @@ void	acquire_dongles(coder_t *coder, sim_t *sim)
 		lower = right;
 		higher = left;
 	}
-	acquire_one_dongle(&sim->dongles[lower], coder, sim);
-	acquire_one_dongle(&sim->dongles[higher], coder, sim);
+	if (!acquire_one_dongle(&sim->dongles[lower], coder, sim))
+		return (0);
+	return (acquire_one_dongle(&sim->dongles[higher], coder, sim));
 }

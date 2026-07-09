@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 10:00:00 by guantino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 #include <limits.h>
 
@@ -46,7 +58,7 @@ static char	*ft_strncpy(char *dest, const char *src, size_t n)
 	return (dest);
 }
 
-int	parse_args(sim_t *sim, char **argv)
+int	parse_args(t_sim *sim, char **argv)
 {
 	long	values[7];
 	int		i;
@@ -55,6 +67,8 @@ int	parse_args(sim_t *sim, char **argv)
 	while (i < 7)
 	{
 		if (ft_str_to_long(argv[i + 1], &values[i]) != 0)
+			return (-1);
+		if (values[i] > INT_MAX)
 			return (-1);
 		i++;
 	}

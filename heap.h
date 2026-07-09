@@ -1,5 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heap.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 10:00:00 by guantino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef HEAP_H
-#define HEAP_H
+# define HEAP_H
 
 typedef long	(*t_priority_fn)(void *ctx, int coder_id);
 
@@ -12,7 +24,7 @@ typedef struct s_heap
 	t_priority_fn	priority;
 }	t_heap;
 
-void	heap_init(t_heap *heap, int capacity, void *ctx, t_priority_fn priority);
+int		heap_init(t_heap *heap, int capacity, void *ctx, t_priority_fn prio);
 void	heap_destroy(t_heap *heap);
 void	heap_swap(t_heap *heap, int i, int j);
 void	heap_sift_up(t_heap *heap, int i);

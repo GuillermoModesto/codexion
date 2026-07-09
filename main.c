@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 10:00:00 by guantino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "codexion.h"
 
 static void	print_usage(char *prog_name)
@@ -10,7 +22,7 @@ static void	print_usage(char *prog_name)
 
 int	main(int argc, char **argv)
 {
-	sim_t	sim;
+	t_sim	sim;
 
 	if (argc != 9)
 	{
@@ -22,14 +34,14 @@ int	main(int argc, char **argv)
 		fprintf(stderr, "Error: invalid arguments\n");
 		return (1);
 	}
-	/* TODO (block 3): init_dongles(&sim), init_coders(&sim)
-	 * Inside init_dongles, for EACH dongle: call heap_init(&dongle->heap,
-	 * 2, &sim, fifo_priority) if sim.scheduler is "fifo", or the same call
-	 * with edf_priority otherwise. This is the ONE place that decision
-	 * gets made - nothing past this point should ever branch on
-	 * sim.scheduler again. */
-	/* TODO (block 3): pthread_create for each coder + the monitor */
-	/* TODO (block 3): pthread_join all of them */
-	/* TODO (block 4/5): destroy mutexes/cond vars and free memory */
+	if (init_sim(&sim) != 0)
+		return (1);
+	if (start_threads(&sim) != 0)
+	{
+		cleanup_sim(&sim);
+		return (1);
+	}
+	join_threads(&sim);
+	cleanup_sim(&sim);
 	return (0);
 }

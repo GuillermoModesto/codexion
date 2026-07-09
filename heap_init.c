@@ -1,13 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heap_init.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: guantino <guantino@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/07/09 10:00:00 by guantino          #+#    #+#             */
+/*   Updated: 2026/07/09 10:00:00 by guantino         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "heap.h"
 #include <stdlib.h>
 
-void	heap_init(t_heap *heap, int capacity, void *ctx, t_priority_fn priority)
+int	heap_init(t_heap *heap, int capacity, void *ctx, t_priority_fn prio)
 {
 	heap->ids = malloc(sizeof(int) * capacity);
+	if (!heap->ids)
+		return (-1);
 	heap->size = 0;
 	heap->capacity = capacity;
 	heap->ctx = ctx;
-	heap->priority = priority;
+	heap->priority = prio;
+	return (0);
 }
 
 void	heap_destroy(t_heap *heap)

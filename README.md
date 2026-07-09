@@ -1,0 +1,2 @@
+-> pthread_create(&t, NULL, saludar, NULL) = "oye, pon a correr la función saludar como un trabajador aparte, y guárdame su identificador en t". A partir de esa línea, saludar y main corren a la vez.
+-> pthread_join(t, NULL) = "espérate aquí parado hasta que el trabajador t termine". Sin esta línea, main podría llegar al final y cerrar el programa antes de que el hilo llegue a hablar.
