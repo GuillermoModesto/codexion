@@ -31,7 +31,7 @@ int	main(int argc, char **argv)
 	}
 	if (parse_args(&sim, argv) != 0)
 	{
-		fprintf(stderr, "Error: invalid arguments\n");
+		fprintf(stderr, "Error: %s\n", "invalid arguments");
 		return (1);
 	}
 	if (init_sim(&sim) != 0)

@@ -13,6 +13,12 @@
 #ifndef CODEXION_H
 # define CODEXION_H
 
+/* Under strict C89 the POSIX declarations (usleep, gettimeofday,
+ * pthread_cond_timedwait...) are hidden unless we ask for them. */
+# ifndef _XOPEN_SOURCE
+#  define _XOPEN_SOURCE 600
+# endif
+
 # include <pthread.h>
 # include <stdio.h>
 # include <stdlib.h>
